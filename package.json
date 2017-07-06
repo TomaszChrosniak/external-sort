@@ -1,0 +1,28 @@
+{
+  "name": "external-sort",
+  "version": "1.0.0",
+  "description": "A module for doing an external sort",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TomaszChrosniak/external-sort.git"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "uuid": "^3.1.0"
+  },
+  "keywords": [
+    "sort",
+    "external-sort",
+    "order"
+  ],
+  "author": "Tomasz Chrośniak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TomaszChrosniak/external-sort/issues"
+  },
+  "homepage": "https://github.com/TomaszChrosniak/external-sort#readme"
+}
