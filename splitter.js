@@ -9,12 +9,14 @@ var fs = Promise.promisifyAll(require("fs"));
 var ArrayStream = require("./array-stream"),
 	NewlineTransform = require("./newline-transform");
 
-var Splitter = function(maxChunks, opts) {
+var SPLITTER_MAX_CHUNKS_DEFAULT = 1024; // does this really matter?
+
+var Splitter = function(maxElems, opts) {
 	Writable.call(this, opts);
-	this.maxChunks = maxChunks;
+	this.maxElems = maxElems;
 	this.tempDirectoryName = path.join(process.cwd(), uuid.v4());
 	this.chunkPaths = [];
-	this.receivedChunks = [];
+	this.receivedElems = [];
 };
 
 util.inherits(Splitter, Writable);
@@ -49,6 +51,7 @@ Splitter.prototype.getNewFile = function() {
 	return this.makeTempDirectory()
 	.then(function() {
 		filePath = path.join(self.tempDirectoryName, uuid.v4() + ".tmp");
+		self.chunkPaths.push(filePath);
 		return fs.statAsync(filePath);
 	})
 	.catch(function(statsError) {
@@ -64,13 +67,13 @@ Splitter.prototype.getNewFile = function() {
 Splitter.prototype._write = function(chunk, encoding, callback) {
 	var self = this;
 
-	this.receivedChunks.push(chunk);
-	if(this.receivedChunks.length >= this.maxChunks) {
-		this.streamToFile(this.receivedChunks)
+	this.receivedElems.push(chunk);
+	if(this.receivedElems.length >= this.maxElems) {
+		this.streamToFile(this.receivedElems)
 		.catch(function(error) {
 			self.emit("error", error);
 		});
-		this.receivedChunks = [];
+		this.receivedElems = [];
 	}
 
 	return callback();
