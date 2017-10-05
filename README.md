@@ -1,5 +1,5 @@
 # external-sort
-A npm module for external sorting for Node.js
+A npm module for external sorting for Node.js.
 
 # Considerations
 This module is to be used for sorting large arrays with minimum use of system memory.
